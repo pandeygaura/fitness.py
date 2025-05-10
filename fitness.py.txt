@@ -1,0 +1,148 @@
+import streamlit as st
+import pandas as pd
+import datetime
+
+# Set page title
+st.set_page_config(page_title="Fitness Tracker", layout="wide")
+
+# Sidebar for navigation
+st.sidebar.title("Fitness Tracker")
+page = st.sidebar.radio("Select a page:", ["Dashboard", "Workout Plans", "Nutrition Plans", "Blog", "User Reviews", "Content Calendar"])
+
+# Helper functions to store and manage data
+def get_data():
+    # In-memory storage (this can be enhanced to save on file or database)
+    return {
+        "step_count": [],
+        "water_intake": [],
+        "workout_plans": [],
+        "nutrition_plans": [],
+        "reviews": [],
+        "blogs": [],
+        "content_calendar": []
+    }
+
+data = get_data()
+
+# Dashboard Page
+if page == "Dashboard":
+    st.title("Welcome to Your Fitness Dashboard! 💪😄")
+    st.write("Track your steps, water intake, and more. 🚶‍♂️💧")
+
+    # Step count input
+    steps = st.number_input("Enter your step count for today:", min_value=0, max_value=1000000, value=0)
+    data["step_count"].append(steps)
+    st.write(f"Total steps today: {steps} 🚶‍♂️")
+
+    # Water intake input
+    water = st.number_input("Enter your water intake (in liters):", min_value=0.0, max_value=10.0, value=0.0, step=0.1)
+    data["water_intake"].append(water)
+    st.write(f"Water intake today: {water} liters 💧")
+
+    # Daily progress bar
+    st.subheader("Your Daily Progress")
+    st.progress(steps / 10000)  # Assuming 10,000 steps as a daily goal
+
+    # Display stats
+    st.subheader("Today's Summary")
+    st.write(f"Step count: {steps} steps 🚶‍♂️")
+    st.write(f"Water intake: {water} liters 💧")
+
+    # Interface for step count and water intake
+    st.markdown("""---""")
+    st.write("### Keep tracking and stay healthy! 💪💯")
+    st.image("https://via.placeholder.com/800x400.png?text=Fitness+Tracker", caption="Stay Fit and Healthy! 🏋️‍♀️")
+
+# Workout Plans Page
+elif page == "Workout Plans":
+    st.title("Workout Plans for the Week 🏋️‍♂️")
+    st.write("Here are your workout plans for the next 6 days! 💪")
+
+    # Predefined workout plans for a week (6 days)
+    workout_plans = [
+        "Day 1: Push-ups, Squats, Lunges 🏋️‍♂️",
+        "Day 2: Cardio (Running/Walking 🚶‍♂️), Plank 🧘‍♂️",
+        "Day 3: Deadlifts, Bench Press, Tricep Dips 💪",
+        "Day 4: Yoga & Stretching 🧘‍♂️",
+        "Day 5: Bicep Curls, Shoulder Press, Pull-ups 🏋️‍♀️",
+        "Day 6: HIIT (High Intensity Interval Training) 🔥"
+    ]
+
+    st.subheader("Workout Plans for the Week: 🗓️")
+    for plan in workout_plans:
+        st.write(f"- {plan}")
+
+# Nutrition Plans Page
+elif page == "Nutrition Plans":
+    st.title("Nutrition Plans for the Week 🍎")
+    st.write("Here are some nutrition plans to help fuel your body! 🍴")
+
+    # Predefined nutrition plans (Food items with their nutrients)
+    nutrition_plans = {
+        "Oats": "Carbs, Protein, Fiber, Magnesium 🥣",
+        "Chicken Breast": "Protein, Vitamin B6, Niacin 🍗",
+        "Spinach": "Iron, Vitamin A, Vitamin C 🥬",
+        "Eggs": "Protein, Vitamin B12, Omega-3 🍳",
+        "Almonds": "Healthy fats, Protein, Vitamin E 🥜",
+        "Banana": "Potassium, Vitamin C, Vitamin B6 🍌"
+    }
+
+    st.subheader("Nutrition Breakdown: 🍽️")
+    for food, nutrients in nutrition_plans.items():
+        st.write(f"**{food}:** {nutrients}")
+
+# Blog Page
+elif page == "Blog":
+    st.title("Fitness Blog 📝")
+    st.write("Here are some blog posts related to fitness and health. 📖")
+
+    # Predefined blog content
+    blog_title = "How to Stay Fit in 30 Minutes a Day 🕒"
+    blog_content = """
+    Staying fit doesn't always mean spending hours at the gym. With just 30 minutes a day, you can achieve significant fitness goals. 
+    Start with a mix of cardio, strength, and flexibility exercises. It's about consistency and pushing yourself to improve daily.
+    """
+    st.subheader(blog_title)
+    st.write(blog_content)
+
+    # Predefined fitness quotes
+    st.subheader("Fitness Quotes 💬")
+    fitness_quotes = [
+        "\"The only bad workout is the one that didn't happen.\" – Anonymous",
+        "\"Your body can stand almost anything. It’s your mind that you have to convince.\" – Anonymous",
+        "\"Don’t limit your challenges. Challenge your limits.\" – Jerry Dunn"
+    ]
+    
+    for quote in fitness_quotes:
+        st.write(f"- {quote}")
+
+# User Reviews Page
+elif page == "User Reviews":
+    st.title("User Reviews 🗣️")
+    st.write("Leave your review about this fitness tracker. 📝")
+    review = st.text_area("Write your review here: 🖊️")
+    if review:
+        data["reviews"].append(review)
+        st.success("Review submitted! 👍")
+
+    st.subheader("User Reviews 🗣️")
+    if data["reviews"]:
+        for rev in data["reviews"]:
+            st.write(f"- {rev}")
+
+# Content Calendar Page
+elif page == "Content Calendar":
+    st.title("Content Calendar 📅")
+    st.write("Plan your fitness-related content and events here. 🗓️")
+
+    # Predefined events for content calendar
+    content_events = [
+        {"date": "2025-05-12", "event": "HIIT Bootcamp at 6 AM 🏋️‍♂️"},
+        {"date": "2025-05-14", "event": "Yoga Class for Flexibility 🧘‍♂️"},
+        {"date": "2025-05-16", "event": "Nutrition Tips Live Session 🍏"}
+    ]
+
+    st.subheader("Upcoming Events: 📆")
+    for entry in content_events:
+        st.write(f"**{entry['date']}**: {entry['event']}")
+
